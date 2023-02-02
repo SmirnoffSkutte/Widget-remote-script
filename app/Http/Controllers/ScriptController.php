@@ -25,6 +25,21 @@ class ScriptController extends Controller
                 'error' => 'Ошибка подключения:проверьте правильность введенного id организации и ключа доступа',
             ],404);
         }
+    }
 
+    public function getWidgetStyles(string $org_id,string $org_key){
+        $keyService=new KeyService();
+        $isValidConnectionData=$keyService->validateConnectionData($org_id,$org_key);
+        if($isValidConnectionData){
+            $path=public_path('css/debtorsTable.css');
+            $headers=[
+                'Content-Type'=>'text/css'
+            ];
+            return response()->file($path,$headers);
+        } else {
+            return response()->json([
+                'error' => 'Ошибка подключения:проверьте правильность введенного id организации и ключа доступа',
+            ],404);
+        }
     }
 }
