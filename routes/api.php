@@ -30,4 +30,3 @@ Route::controller(HouseController::class)->middleware(\App\Http\Middleware\authe
 });
 
 Route::get('/debtors-table-widget/{org_id}/{org_key}','ScriptController@getWidgetScript');
-Route::get('/debtors-table-widget-styles/{org_id}/{org_key}','ScriptController@getWidgetStyles');

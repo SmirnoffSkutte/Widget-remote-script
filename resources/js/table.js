@@ -18,21 +18,39 @@ async function addTableScripts(){
 
     document.getElementById('debtorsHouseSelector').addEventListener('change',async function(){
         renderTableFetchLoader()
+        let data;
         let houseId=document.getElementById('debtorsHouseSelector').value
-        let data=await authedFetchGet(`debts-by-house/${houseId}`)
-        console.log(document.getElementById('debtorsMonthsInput').value)
+        let months=document.getElementById('debtorsMonthsInput').value
+        if(months){
+            data=await authedFetchGet(`debts-by-house-and-months/${houseId}/${months}`)
+        } else {
+            data=await authedFetchGet(`debts-by-house/${houseId}`)
+        }
         renderTableData(data)
     })
 
-    document.getElementById('debtorsMonthsInput').addEventListener('input',async function(){
+    function debounce( callback, delay ) {
+        let timeout;
+        return function() {
+            clearTimeout( timeout );
+            timeout = setTimeout( callback, delay );
+        }
+    }
+
+    document.getElementById('debtorsMonthsInput').addEventListener('input',debounce(async function(){
+        let data
         let houseId=document.getElementById('debtorsHouseSelector').value
         let months=document.getElementById('debtorsMonthsInput').value
         if(houseId && months){
             renderTableFetchLoader()
-            let data=await authedFetchGet(`debts-by-house-and-months/${houseId}/${months}`)
+            data=await authedFetchGet(`debts-by-house-and-months/${houseId}/${months}`)
+            renderTableData(data)
+        } else if(houseId && !months){
+            renderTableFetchLoader()
+            data=await authedFetchGet(`debts-by-house/${houseId}`)
             renderTableData(data)
         }
-    })
+    },250))
 }
 
 export {addTableScripts}

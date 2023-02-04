@@ -12,7 +12,7 @@ class ScriptController extends Controller
         $keyService=new KeyService();
         $isValidConnectionData=$keyService->validateConnectionData($org_id,$org_key);
         if($isValidConnectionData){
-            $path=public_path('build/assets/app-0deab73f.js');
+            $path=public_path('build/assets/app-68a89415.js');
             $storageKey ="sessionStorage.setItem('debtorsTableKey','$org_key');";
             $fileData = file_get_contents($path);
             $newFileData=$storageKey.$fileData;

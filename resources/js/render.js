@@ -1,6 +1,17 @@
 import {addTableScripts} from "./table.js";
+import {configColor} from "./config.js";
+
+function renderLoader(){
+    let loader=`
+    <div>
+        <div class="debtorsLoading"></div>
+    </div>
+    `
+    document.getElementById('debtorsTableContainer').innerHTML=loader
+}
 
 function renderDebtorsTable(){
+    renderLoader()
     let debtorsTable= `
     <div class="row">
         <div class="col-md-6 debtorsSelectBlock">
@@ -38,28 +49,23 @@ function renderDebtorsTable(){
 }
 
 function renderTableData(data){
-    let tableData = data.map(value => {
-        return (
-            `<tr>
+    let tableData;
+    if(data[0]===undefined){
+        tableData=`<td style="color:${configColor}">Таких должников нет</td>`
+    } else {
+        tableData = data.map(value => {
+            return (
+                `<tr>
        <td>${value.rec_id}</td>
        <td>${value.username}</td>
        <td>${value.quant_month}</td>
        <td>${value.quant_bal}</td>
             </tr>`
-        );
-    }).join('');
-
+            );
+        }).join('');
+    }
     let table = document.getElementById("debtorsTableBody");
     table.innerHTML=tableData
-}
-
-function renderLoader(){
-    let loader=`
-    <div>
-        <div class="debtorsLoading"></div>
-    </div>
-    `
-    document.getElementById('debtorsTableContainer').innerHTML=loader
 }
 
 function renderTableFetchLoader(){
